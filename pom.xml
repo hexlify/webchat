@@ -39,10 +39,17 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.64</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ftpix</groupId>
+            <artifactId>sparknotation</artifactId>
+            <version>1.12</version>
         </dependency>
     </dependencies>
 </project>

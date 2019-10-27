@@ -1,18 +1,15 @@
-import user.UserController;
-import user.UserDao;
-import util.JsonTransformer;
+import com.ftpix.sparknnotation.Sparknotation;
 
-import static spark.Spark.*;
+import java.io.IOException;
+
+import static spark.Spark.get;
+import static spark.Spark.port;
 
 
 public class Main {
-    public static UserDao userDao;
-
-    public static void main(String[] args) {
-        userDao = new UserDao();
-
+    public static void main(String[] args) throws IOException {
         port(8000);
         get("/", (req, res) -> "Hello, world!");
-        get("/users/:username", new UserController().findUser, new JsonTransformer());
+        Sparknotation.init();
     }
 }
