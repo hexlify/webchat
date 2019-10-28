@@ -11,5 +11,4 @@ mvn clean package
 java -jar .\target\webchat-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-
- 
+Сервер работает на `localhost:8000`
