@@ -6,18 +6,24 @@ import com.ftpix.sparknnotation.annotations.SparkParam;
 import spark.Response;
 import util.JsonTransformer;
 
+
 @SparkController("user")
 public class UserController {
     private UserDao userDao;
 
-    public UserController() {
-        userDao = new UserDao();
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    @SparkGet(value = "/e/:email", transformer = JsonTransformer.class)
+    public User findUserByEmail(@SparkParam("email") String email, Response response) {
+        response.type("application/json");
+        return userDao.findByEmail(email);
     }
 
     @SparkGet(value = "/:username", transformer = JsonTransformer.class)
-    public User getUser(@SparkParam("username") String username, Response response) {
+    public User findUserByUsername(@SparkParam("username") String username, Response response) {
         response.type("application/json");
-        User user = userDao.getUserByUsername(username);
-        return user;
+        return userDao.findByUsername(username);
     }
 }

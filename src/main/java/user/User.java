@@ -5,20 +5,36 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.util.DigestFactory;
 import org.bouncycastle.util.encoders.Base64;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 public class User {
     private static final int hashLength = 20;
 
+    @Id
+    @GeneratedValue
     public UUID id;
+
     public String username;
     public String email;
 
+    public LocalDateTime creationTimestamp;
+    public boolean isActivated;
+    public boolean isBanned;
+
     private String passwordHash;
     private String salt;
+
+    public User() {
+    }
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -53,9 +69,4 @@ public class User {
 
         return hash.equals(hashToCheck);
     }
-
-    public LocalDateTime creationTimestamp;
-
-    public boolean isActivated;
-    public boolean isBanned;
 }

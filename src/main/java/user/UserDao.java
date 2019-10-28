@@ -1,22 +1,41 @@
 package user;
 
-import com.google.common.collect.ImmutableList;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
-
 public class UserDao {
-    private final List<User> users = ImmutableList.of(
-            new User("TestUser1", "testuser1@email.net", "qwerty01"),
-            new User("TestUser2", "testuser2@email.net", "qwerty02"),
-            new User("TestUser3", "testuser3@email.net", "qwerty03")
-    );
+    private SessionFactory sessionFactory;
 
-    public User getUserByEmail(String email) {
-        return users.stream().filter(x -> x.email.equals(email)).findFirst().orElse(null);
+    public UserDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    public User getUserByUsername(String username) {
-        return users.stream().filter(x -> x.username.equals(username)).findFirst().orElse(null);
+    public User findByEmail(String email) {
+        Session session = sessionFactory.openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> root = criteria.from(User.class);
+        criteria.where(builder.equal(root.get("email"), email));
+
+        List<User> users = session.createQuery(criteria).getResultList();
+        return users.stream().findFirst().orElse(null);
+    }
+
+    public User findByUsername(String username) {
+        Session session = sessionFactory.openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> root = criteria.from(User.class);
+        criteria.where(builder.equal(root.get("username"), username));
+
+        List<User> users = session.createQuery(criteria).getResultList();
+        return users.stream().findFirst().orElse(null);
     }
 }
