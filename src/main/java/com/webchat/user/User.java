@@ -1,4 +1,4 @@
-package user;
+package com.webchat.user;
 
 import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.bouncycastle.crypto.params.KeyParameter;
@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 
 @Entity
 @Table(name = "users")
