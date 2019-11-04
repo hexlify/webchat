@@ -4,11 +4,13 @@
 
 ## Запуск веб-сервиса
 
-Для запуска сервера необходима `Java 8+`, а также установленный `Maven`
++ `Java 8+`
++ `Maven plugin`
++ `Lombok plugin`
 
 ```
 mvn clean package
-java -jar .\target\webchat-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar .\target\webchat-1.0-SNAPSHOT.jar
 ```
 
 Сервер работает на `localhost:8000`

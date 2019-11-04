@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
