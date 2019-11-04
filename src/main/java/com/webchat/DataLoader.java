@@ -23,8 +23,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void createTestUsers() {
-        userService.create(new User("TestUser1", "testuser1@email.net", "qwerty"));
-        userService.create(new User("TestUser2", "testuser2@email.net", "qwerty"));
-        userService.create(new User("TestUser3", "testuser3@email.net", "qwerty"));
+        userService.register(new User("TestUser1", "testuser1@email.net"), "qwerty");
+        userService.register(new User("TestUser2", "testuser2@email.net"), "qwerty");
+        userService.register(new User("TestUser3", "testuser3@email.net"), "qwerty");
     }
 }
