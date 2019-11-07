@@ -1,4 +1,4 @@
-package com.webchat.user;
+package com.webchat.domain.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +16,10 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void register(User user, String password) {
+    public boolean tryRegister(User user, String password) {
         user.setPasswordHash(passwordEncoder.encode(password));
         userRepository.save(user);
+        return true;
     }
 
     public boolean verifyPassword(User user, String password) {

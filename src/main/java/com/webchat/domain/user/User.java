@@ -1,4 +1,4 @@
-package com.webchat.user;
+package com.webchat.domain.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

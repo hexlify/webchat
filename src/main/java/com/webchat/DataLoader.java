@@ -1,7 +1,7 @@
 package com.webchat;
 
-import com.webchat.user.User;
-import com.webchat.user.UserServiceImpl;
+import com.webchat.domain.user.User;
+import com.webchat.domain.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,8 +23,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void createTestUsers() {
-        userService.register(new User("test_user1", "testuser1@email.net"), "qwerty");
-        userService.register(new User("test_user2", "testuser2@email.net"), "qwerty");
-        userService.register(new User("test_user3", "testuser3@email.net"), "qwerty");
+        userService.tryRegister(new User("test_user1", "testuser1@email.net"), "qwerty");
+        userService.tryRegister(new User("test_user2", "testuser2@email.net"), "qwerty");
+        userService.tryRegister(new User("test_user3", "testuser3@email.net"), "qwerty");
     }
 }

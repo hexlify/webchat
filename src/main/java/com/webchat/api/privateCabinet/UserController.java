@@ -1,5 +1,7 @@
-package com.webchat.user;
+package com.webchat.api.privateCabinet;
 
+import com.webchat.domain.user.User;
+import com.webchat.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "u")
 public class UserController {
 
-    @Autowired
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    public UserController(UserServiceImpl userService) {
+    @Autowired
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -18,5 +20,10 @@ public class UserController {
     @ResponseBody
     public User getUser(@PathVariable String username) {
         return userService.findByUsername(username);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        return "Hello, world!";
     }
 }
