@@ -7,17 +7,18 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+
+@RestController
 public class ChatController {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
 
     @MessageMapping("/chat/sendMessage")
     @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage, HttpServletResponse resp) {
         logger.info("Received: " + chatMessage.getContent());
 
         return chatMessage;
