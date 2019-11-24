@@ -21,9 +21,4 @@ public class UserController {
     public User getUser(@PathVariable String username) {
         return userService.findByUsername(username);
     }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-        return "Hello, world!";
-    }
 }
