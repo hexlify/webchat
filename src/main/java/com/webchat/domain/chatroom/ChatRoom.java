@@ -1,12 +1,24 @@
-package com.webchat.model;
+package com.webchat.domain.chatroom;
 
-import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.*;
 import java.util.UUID;
 
 
+@Entity
+@Table
+@ToString(of = {"name", "description"})
+@EqualsAndHashCode(of = {"id"})
+@NoArgsConstructor
 public class ChatRoom {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
     private String name;
     private String description;
 
