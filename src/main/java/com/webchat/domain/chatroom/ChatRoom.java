@@ -1,10 +1,14 @@
 package com.webchat.domain.chatroom;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -17,10 +21,20 @@ public class ChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.IdNameDescription.class)
     private UUID id;
 
+    @JsonView(Views.IdNameDescription.class)
     private String name;
+
+    @JsonView(Views.IdNameDescription.class)
     private String description;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyy HH:mm:ss")
+    @JsonView(Views.FullChatRoom.class)
+    private LocalDateTime creationTimestamp;
 
     public ChatRoom(String name, String description) {
         id = UUID.randomUUID();
@@ -50,5 +64,9 @@ public class ChatRoom {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getCreationTimestamp() {
+        return creationTimestamp;
     }
 }
