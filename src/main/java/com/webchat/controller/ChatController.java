@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@CrossOrigin("fuck off CORS!!!")
 public class ChatController {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
 
     @MessageMapping("/chat/sendMessage")
     @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage, HttpServletResponse resp) {
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
         logger.info("Received: " + chatMessage.getContent());
 
         return chatMessage;
