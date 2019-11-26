@@ -2,6 +2,7 @@ package com.webchat.domain.chatroom;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.webchat.domain.chatmessage.ChatMessage;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -36,10 +39,19 @@ public class ChatRoom {
     @JsonView(Views.FullChatRoom.class)
     private LocalDateTime creationTimestamp;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="chat_room_id")
+    @JsonView(Views.FullChatRoom.class)
+    private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+
     public ChatRoom(String name, String description) {
         id = UUID.randomUUID();
         this.name = name;
         this.description = description;
+    }
+
+    public List<ChatMessage> getChatMessages() {
+        return chatMessages;
     }
 
     public UUID getId() {

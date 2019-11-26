@@ -32,7 +32,7 @@ public class ChatRoomController {
     }
 
     @GetMapping("{chatRoomId}")
-    @JsonView(Views.FullChatRoom.class)
+//    @JsonView(Views.FullChatRoom.class)  почему то не отдает список сообщений
     public ChatRoom get(@PathVariable("chatRoomId") ChatRoom chatRoom) {
         if (chatRoom == null) {
             throw new NotFoundException();
