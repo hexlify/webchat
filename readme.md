@@ -2,6 +2,11 @@
 
 Доска в [Trello](https://trello.com/b/AlN4zek0/web-chat)
 
+## Demo
+
+[Тут](https://webchat-frontend.herokuapp.com/)
+
+
 ## Запуск веб-сервиса
 
 + `Java 8+`
