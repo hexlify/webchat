@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Web" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="webchat" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.webchat.Application" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <envs>
+      <env name="FRONTEND_URL" value="http://localhost:3000" />
+      <env name="JDBC_DATABASE_USERNAME" value="postgres" />
+      <env name="JDBC_DATABASE_URL" value="jdbc:postgresql://localhost:5432/postgres " />
+      <env name="JDBC_DATABASE_PASSWORD" value="123" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
