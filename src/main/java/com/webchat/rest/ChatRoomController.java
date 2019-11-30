@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.webchat.rest.contracts.NewChatRoomRequest;
 import com.webchat.rest.errors.NotFoundException;
 import com.webchat.model.ChatRoom;
-import com.webchat.repository.ChatRoomRepo;
+import com.webchat.repository.ChatRoomRepository;
 import com.webchat.model.Views;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +17,18 @@ import java.util.List;
 @RequestMapping("cr")
 public class ChatRoomController {
 
-    private final ChatRoomRepo chatRoomRepo;
+    private final ChatRoomRepository chatRoomRepository;
 
     @Autowired
-    public ChatRoomController(ChatRoomRepo chatRoomRepo) {
-        this.chatRoomRepo = chatRoomRepo;
+    public ChatRoomController(ChatRoomRepository chatRoomRepository) {
+        this.chatRoomRepository = chatRoomRepository;
     }
 
 
     @GetMapping
     @JsonView(Views.IdNameDescription.class)
     public List<ChatRoom> getAll() {
-        return chatRoomRepo.findAll();
+        return chatRoomRepository.findAll();
     }
 
     @GetMapping("{chatRoomId}")
@@ -44,7 +44,7 @@ public class ChatRoomController {
     @JsonView(Views.IdNameDescription.class)
     public ChatRoom create(@RequestBody NewChatRoomRequest newChatRoomRequest) {
         ChatRoom newChatRoom = new ChatRoom(newChatRoomRequest.getName(), newChatRoomRequest.getDescription());
-        return chatRoomRepo.save(newChatRoom);
+        return chatRoomRepository.save(newChatRoom);
     }
 
     @PutMapping("{chatRoomId}")
@@ -55,7 +55,7 @@ public class ChatRoomController {
             throw new NotFoundException();
         }
         BeanUtils.copyProperties(newChatRoomRequest, chatRoom);
-        return chatRoomRepo.save(chatRoom);
+        return chatRoomRepository.save(chatRoom);
     }
 
     @DeleteMapping("{chatRoomId}")
@@ -63,6 +63,6 @@ public class ChatRoomController {
         if (chatRoom == null) {
             throw new NotFoundException();
         }
-        chatRoomRepo.delete(chatRoom);
+        chatRoomRepository.delete(chatRoom);
     }
 }

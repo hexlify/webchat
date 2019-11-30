@@ -2,7 +2,7 @@ package com.webchat.rest;
 
 import com.webchat.rest.contracts.ChatMessageRequest;
 import com.webchat.model.ChatMessage;
-import com.webchat.repository.ChatMessageRepo;
+import com.webchat.repository.ChatMessageRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ChatController {
 
-    private final ChatMessageRepo chatMessageRepo;
+    private final ChatMessageRepository chatMessageRepository;
 
     @Autowired
-    public ChatController(ChatMessageRepo chatMessageRepo) {
-        this.chatMessageRepo = chatMessageRepo;
+    public ChatController(ChatMessageRepository chatMessageRepository) {
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     @MessageMapping("/chat/sendMessage")
@@ -27,7 +27,7 @@ public class ChatController {
     public ChatMessageRequest sendMessage(@Payload ChatMessageRequest chatMessageRequest) {
         ChatMessage chatMessage = new ChatMessage();
         BeanUtils.copyProperties(chatMessageRequest, chatMessage);
-        chatMessageRepo.save(chatMessage);
+        chatMessageRepository.save(chatMessage);
 
         return chatMessageRequest;
     }
