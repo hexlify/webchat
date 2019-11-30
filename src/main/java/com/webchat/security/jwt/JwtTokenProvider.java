@@ -19,26 +19,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Component
 public class JwtTokenProvider {
 
+    private final UserDetailsService userDetailsService;
     @Value("${jwt.token.secret}")
     private String secret;
-
     @Value("${jwt.token.expired}")
     private long validityInMilliSeconds;
-
-    private UserDetailsService userDetailsService;
 
     @Autowired
     public JwtTokenProvider(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
     }
 
     @PostConstruct
