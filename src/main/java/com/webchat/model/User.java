@@ -21,7 +21,11 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(name = "password_hash")
-    private String passwordHash;
+    private String password;
+
+    @Column(name="status")
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus status;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
