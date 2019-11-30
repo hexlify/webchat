@@ -1,12 +1,12 @@
-package com.webchat.api;
+package com.webchat.rest;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.webchat.api.contracts.NewChatRoomRequest;
-import com.webchat.api.errors.NotFoundException;
-import com.webchat.domain.chatroom.ChatRoom;
-import com.webchat.domain.chatroom.ChatRoomRepo;
-import com.webchat.domain.chatroom.Views;
+import com.webchat.rest.contracts.NewChatRoomRequest;
+import com.webchat.rest.errors.NotFoundException;
+import com.webchat.model.ChatRoom;
+import com.webchat.repository.ChatRoomRepo;
+import com.webchat.model.Views;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

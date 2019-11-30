@@ -1,4 +1,4 @@
-package com.webchat.domain.chatmessage;
+package com.webchat.model;
 
 public enum ChatMessageType {
     CHAT,

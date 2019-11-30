@@ -1,7 +1,7 @@
-package com.webchat.api;
+package com.webchat.rest;
 
-import com.webchat.domain.chatmessage.ChatMessage;
-import com.webchat.domain.chatmessage.ChatMessageType;
+import com.webchat.model.ChatMessage;
+import com.webchat.model.ChatMessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

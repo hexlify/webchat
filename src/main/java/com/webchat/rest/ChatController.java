@@ -1,8 +1,8 @@
-package com.webchat.api;
+package com.webchat.rest;
 
-import com.webchat.api.contracts.ChatMessageRequest;
-import com.webchat.domain.chatmessage.ChatMessage;
-import com.webchat.domain.chatmessage.ChatMessageRepo;
+import com.webchat.rest.contracts.ChatMessageRequest;
+import com.webchat.model.ChatMessage;
+import com.webchat.repository.ChatMessageRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

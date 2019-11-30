@@ -1,8 +1,7 @@
-package com.webchat.domain.chatroom;
+package com.webchat.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.webchat.domain.chatmessage.ChatMessage;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

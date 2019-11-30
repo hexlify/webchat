@@ -1,4 +1,4 @@
-package com.webchat.domain.chatroom;
+package com.webchat.model;
 
 public final class Views {
 

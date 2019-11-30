@@ -1,6 +1,6 @@
-package com.webchat.api.contracts;
+package com.webchat.rest.contracts;
 
-import com.webchat.domain.chatmessage.ChatMessageType;
+import com.webchat.model.ChatMessageType;
 
 import java.util.UUID;
 

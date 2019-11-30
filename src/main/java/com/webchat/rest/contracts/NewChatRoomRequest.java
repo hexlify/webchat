@@ -1,4 +1,4 @@
-package com.webchat.api.contracts;
+package com.webchat.rest.contracts;
 
 public class NewChatRoomRequest {
 
