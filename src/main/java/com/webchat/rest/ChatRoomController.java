@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("cr")
+@RequestMapping("room")
 public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -40,7 +40,7 @@ public class ChatRoomController {
         return chatRoom;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @JsonView(Views.IdNameDescription.class)
     public ChatRoom create(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
         ChatRoom newChatRoom = new ChatRoom(chatRoomRequestDTO.getName(), chatRoomRequestDTO.getDescription());
