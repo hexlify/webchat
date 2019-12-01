@@ -2,10 +2,13 @@ package com.webchat.rest;
 
 import com.webchat.dto.AuthenticationRequestDTO;
 import com.webchat.dto.AuthenticationResponseDTO;
+import com.webchat.dto.RegisterRequestDTO;
 import com.webchat.model.User;
 import com.webchat.security.jwt.JwtTokenProvider;
 import com.webchat.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,10 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth")
 public class AuthenticationController {
 
+    private static final ModelMapper modelMapper = new ModelMapper();
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-
 
     @Autowired
     public AuthenticationController(
@@ -57,6 +60,17 @@ public class AuthenticationController {
 
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid user or password");
+        }
+    }
+
+    @PostMapping(value = "/register")
+    public void register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+        User user = modelMapper.map(registerRequestDTO, User.class);
+        try {
+            userService.register(user);
+        }
+        catch (DataAccessException e) {
+            throw new IllegalArgumentException();
         }
     }
 }

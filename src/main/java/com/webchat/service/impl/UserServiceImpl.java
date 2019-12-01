@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,25 +23,24 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder(12);
-    }
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
+    // TODO это все таки надо куда-то утащить
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
     @Override
     public User register(User user) {
         Role roleUser = roleRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleUser);
 
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        user.setRoles(userRoles);
+        user.setRoles(Arrays.asList(roleUser));
         user.setStatus(UserStatus.ACTIVE);
 
         User registeredUser = userRepository.save(user);
