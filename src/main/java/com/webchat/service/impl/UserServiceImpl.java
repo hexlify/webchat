@@ -8,6 +8,7 @@ import com.webchat.repository.UserRepository;
 import com.webchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder(12);
+    }
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
@@ -35,7 +40,7 @@ public class UserServiceImpl implements UserService {
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setRoles(userRoles);
         user.setStatus(UserStatus.ACTIVE);
 

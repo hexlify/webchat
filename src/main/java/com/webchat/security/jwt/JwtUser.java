@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class JwtUser implements UserDetails {
 
-    private final UUID id;
+    private final long id;
     private final String username;
     private final String firstName;
     private final String email;
@@ -19,7 +19,7 @@ public class JwtUser implements UserDetails {
     private final LocalDateTime lastPasswordResetTimestamp;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUser(UUID id, String username, String firstName, String email, String password, boolean enabled,
+    public JwtUser(long id, String username, String firstName, String email, String password, boolean enabled,
                    LocalDateTime lastPasswordResetTimestamp,
                    Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -33,7 +33,7 @@ public class JwtUser implements UserDetails {
     }
 
     @JsonIgnore
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
@@ -87,6 +87,6 @@ public class JwtUser implements UserDetails {
     @Override
     @JsonIgnore
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 }
