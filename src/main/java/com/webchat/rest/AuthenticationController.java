@@ -1,6 +1,7 @@
 package com.webchat.rest;
 
 import com.webchat.dto.AuthenticationRequestDTO;
+import com.webchat.dto.AuthenticationResponseDTO;
 import com.webchat.model.User;
 import com.webchat.security.jwt.JwtTokenProvider;
 import com.webchat.service.UserService;
@@ -36,7 +37,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDTO requestDTO) {
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO requestDTO) {
         try {
 
             String username = requestDTO.getUsername();
@@ -48,9 +49,9 @@ public class AuthenticationController {
             }
 
             String token = jwtTokenProvider.createToken(username, user.getRoles());
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("token", token);
+            AuthenticationResponseDTO response = new AuthenticationResponseDTO();
+            response.setUsername(username);
+            response.setToken(token);
 
             return ResponseEntity.ok(response);
 
