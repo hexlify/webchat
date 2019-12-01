@@ -1,6 +1,6 @@
 package com.webchat.rest;
 
-import com.webchat.rest.contracts.ChatMessageRequest;
+import com.webchat.dto.ChatMessageDTO;
 import com.webchat.model.ChatMessage;
 import com.webchat.repository.ChatMessageRepository;
 import org.springframework.beans.BeanUtils;
@@ -24,19 +24,19 @@ public class ChatController {
 
     @MessageMapping("/chat/sendMessage")
     @SendTo("/topic/public")
-    public ChatMessageRequest sendMessage(@Payload ChatMessageRequest chatMessageRequest) {
+    public ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessageDTO) {
         ChatMessage chatMessage = new ChatMessage();
-        BeanUtils.copyProperties(chatMessageRequest, chatMessage);
+        BeanUtils.copyProperties(chatMessageDTO, chatMessage);
         chatMessageRepository.save(chatMessage);
 
-        return chatMessageRequest;
+        return chatMessageDTO;
     }
 
     @MessageMapping("/chat/addUser")
     @SendTo("/topic/public")
-    public ChatMessageRequest addUser(@Payload ChatMessageRequest chatMessage,
-                                      SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        return chatMessage;
+    public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessageDTO,
+                                  SimpMessageHeaderAccessor headerAccessor) {
+        headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getSender());
+        return chatMessageDTO;
     }
 }

@@ -2,7 +2,7 @@ package com.webchat.rest;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.webchat.rest.contracts.NewChatRoomRequest;
+import com.webchat.dto.ChatRoomRequestDTO;
 import com.webchat.rest.errors.NotFoundException;
 import com.webchat.model.ChatRoom;
 import com.webchat.repository.ChatRoomRepository;
@@ -42,19 +42,19 @@ public class ChatRoomController {
 
     @PostMapping
     @JsonView(Views.IdNameDescription.class)
-    public ChatRoom create(@RequestBody NewChatRoomRequest newChatRoomRequest) {
-        ChatRoom newChatRoom = new ChatRoom(newChatRoomRequest.getName(), newChatRoomRequest.getDescription());
+    public ChatRoom create(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
+        ChatRoom newChatRoom = new ChatRoom(chatRoomRequestDTO.getName(), chatRoomRequestDTO.getDescription());
         return chatRoomRepository.save(newChatRoom);
     }
 
     @PutMapping("{chatRoomId}")
     @JsonView(Views.IdNameDescription.class)
     public ChatRoom update(@PathVariable("chatRoomId") ChatRoom chatRoom,
-                           @RequestBody NewChatRoomRequest newChatRoomRequest) {
+                           @RequestBody ChatRoomRequestDTO chatRoomRequest) {
         if (chatRoom == null) {
             throw new NotFoundException();
         }
-        BeanUtils.copyProperties(newChatRoomRequest, chatRoom);
+        BeanUtils.copyProperties(chatRoomRequest, chatRoom);
         return chatRoomRepository.save(chatRoom);
     }
 
