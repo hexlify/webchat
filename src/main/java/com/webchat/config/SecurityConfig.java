@@ -22,9 +22,8 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADMIN_ENDPOINT = "/admin/**";
-    private static final String LOGIN_ENDPOINT = "/auth/login";
-    private static final String REGISTER_ENDPOINT = "/auth/register";
-    private static final String WEBSOCKET_ENDPOINT = "/ws/**";
+    private static final String AUTH_ENDPOINTS = "/auth/**";
+    private static final String WEBSOCKET_ENDPOINTS = "/ws/**";
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -44,11 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new CORSResponseFilter(), SessionManagementFilter.class)
                 .cors()
                 .and()
+                .csrf().disable()  // АККУРАТНЕЕ С ЭТОЙ ХУЕТОЙ!!!
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT, REGISTER_ENDPOINT, WEBSOCKET_ENDPOINT, "/").permitAll()
+                .antMatchers(AUTH_ENDPOINTS, WEBSOCKET_ENDPOINTS, "/").permitAll()
                 .antMatchers(ADMIN_ENDPOINT, "/room/create").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

@@ -3,6 +3,7 @@ package com.webchat.rest;
 import com.webchat.dto.AuthenticationRequestDTO;
 import com.webchat.dto.AuthenticationResponseDTO;
 import com.webchat.dto.RegisterRequestDTO;
+import com.webchat.dto.UserDTO;
 import com.webchat.model.User;
 import com.webchat.security.jwt.JwtTokenProvider;
 import com.webchat.service.UserService;
@@ -25,18 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth")
 public class AuthenticationController {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public AuthenticationController(
             AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
-            UserService userService) {
+            UserService userService, ModelMapper modelMapper) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping(value = "/login")
@@ -64,7 +66,9 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public void register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+
+        // TODO проверить что такой пользователь уже существует
         User user = modelMapper.map(registerRequestDTO, User.class);
         try {
             userService.register(user);
@@ -72,5 +76,8 @@ public class AuthenticationController {
         catch (DataAccessException e) {
             throw new IllegalArgumentException();
         }
+
+        UserDTO response = modelMapper.map(user, UserDTO.class);
+        return ResponseEntity.ok(response);
     }
 }
