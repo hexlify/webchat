@@ -4,12 +4,11 @@ import com.webchat.model.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -73,6 +72,18 @@ public class JwtTokenProvider {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    public String resolveToken(StompHeaderAccessor stompHeaderAccessor) {
+        List<String> headers = stompHeaderAccessor.getNativeHeader("Authorization");
+        if (headers == null || headers.size() == 0) {
+            return null;
+        }
+
+        String bearerToken = headers.get(0);
+        return bearerToken.startsWith("Bearer ")
+                ? bearerToken.substring(7)
+                : null;
     }
 
     public boolean validateToken(String token) {
