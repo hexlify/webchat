@@ -17,14 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/user")
 public class ProfileController {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ProfileController(UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public ProfileController(UserService userService, JwtTokenProvider jwtTokenProvider,
+                             ModelMapper modelMapper) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
