@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -24,7 +25,9 @@ public class ChatController {
 
     @MessageMapping("/chat/sendMessage")
     @SendTo("/topic/public")
-    public ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessageDTO) {
+    public ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessageDTO, StompHeaderAccessor stompHeaderAccessor) {
+        String sender = stompHeaderAccessor.getUser().getName();
+        chatMessageDTO.setSender(sender);
         ChatMessage chatMessage = new ChatMessage();
         BeanUtils.copyProperties(chatMessageDTO, chatMessage);
         chatMessageRepository.save(chatMessage);
@@ -32,11 +35,14 @@ public class ChatController {
         return chatMessageDTO;
     }
 
-    @MessageMapping("/chat/addUser")
-    @SendTo("/topic/public")
-    public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessageDTO,
-                                  SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getSender());
-        return chatMessageDTO;
-    }
+//    @MessageMapping("/chat/addUser")
+//    @SendTo("/topic/public")
+//    public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessageDTO, StompHeaderAccessor stompHeaderAccessor) {
+//        String sender = stompHeaderAccessor.getUser().getName();
+//        chatMessageDTO.setSender(sender);
+//
+//        return chatMessageDTO;
+//    }
 }
+
+// TODO сессия создается на вкладку в браузере. Следовательно, сработает по разу на вкладку. Ожидается не то

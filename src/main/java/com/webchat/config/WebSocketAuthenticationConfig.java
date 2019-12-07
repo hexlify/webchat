@@ -42,25 +42,25 @@ public class WebSocketAuthenticationConfig implements WebSocketMessageBrokerConf
         registry.enableSimpleBroker("/topic");  // рассылка новостей клиентам
     }
 
-//    @Override
-//    public void configureClientInboundChannel(ChannelRegistration registration) {
-//        registration.interceptors(new ChannelInterceptor() {
-//
-//            @Override
-//            public Message<?> preSend(Message<?> message, MessageChannel channel) {
-//                StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-//
-//                if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
-//                    String token = jwtTokenProvider.resolveToken(accessor);
-//                    if (token != null) {
-//                        Authentication user = jwtTokenProvider.getAuthentication(token);
-//                        accessor.setUser(user);
-//                    }
-//                }
-//
-//                return message;
-//            }
-//
-//        });
-//    }
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new ChannelInterceptor() {
+
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
+                if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
+                    String token = jwtTokenProvider.resolveToken(accessor);
+                    if (token != null) {
+                        Authentication user = jwtTokenProvider.getAuthentication(token);
+                        accessor.setUser(user);
+                    }
+                }
+
+                return message;
+            }
+            // TODO: AccessDeniedException handling   StompSubProtocolHandler.sendErrorMessage
+        });
+    }
 }
