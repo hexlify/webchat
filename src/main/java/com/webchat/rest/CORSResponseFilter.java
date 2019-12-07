@@ -3,14 +3,13 @@ package com.webchat.rest;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("*")
+
 public class CORSResponseFilter implements Filter {
 
-    @Value("${frontend.url}")
+    @Value("${FRONTEND_URL}")
     private String frontendUrl;
 
     @Override
@@ -21,9 +20,9 @@ public class CORSResponseFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-//        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-//        httpServletResponse.setHeader("Access-Control-Allow-Origin", frontendUrl);
-//        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

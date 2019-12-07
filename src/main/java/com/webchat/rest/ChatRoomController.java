@@ -25,14 +25,13 @@ public class ChatRoomController {
     }
 
 
-    @GetMapping
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS})
     @JsonView(Views.IdNameDescription.class)
     public List<ChatRoom> getAll() {
         return chatRoomRepository.findAll();
     }
 
-    @GetMapping("{chatRoomId}")
-//    @JsonView(Views.FullChatRoom.class)  почему то не отдает список сообщений
+    @RequestMapping(value = "{chatRoomId}", method = {RequestMethod.GET, RequestMethod.OPTIONS})
     public ChatRoom get(@PathVariable("chatRoomId") ChatRoom chatRoom) {
         if (chatRoom == null) {
             throw new NotFoundException();
@@ -40,7 +39,7 @@ public class ChatRoomController {
         return chatRoom;
     }
 
-    @PostMapping("/create")
+    @PostMapping("create")
     @JsonView(Views.IdNameDescription.class)
     public ChatRoom create(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
         ChatRoom newChatRoom = new ChatRoom(chatRoomRequestDTO.getName(), chatRoomRequestDTO.getDescription());
@@ -66,3 +65,5 @@ public class ChatRoomController {
         chatRoomRepository.delete(chatRoom);
     }
 }
+
+// TODO избавиться от Json.View и перейти на DTO
