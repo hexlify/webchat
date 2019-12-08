@@ -14,13 +14,13 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "/user")
-public class ProfileController {
+public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ProfileController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
     }

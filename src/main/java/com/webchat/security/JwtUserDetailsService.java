@@ -4,7 +4,6 @@ import com.webchat.model.User;
 import com.webchat.security.jwt.JwtUser;
 import com.webchat.security.jwt.JwtUserFactory;
 import com.webchat.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Primary
-@Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
@@ -34,7 +32,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
 
         JwtUser jwtUser = JwtUserFactory.create(user);
-        log.info("{} was successfully loaded", username);
         return jwtUser;
     }
 }
