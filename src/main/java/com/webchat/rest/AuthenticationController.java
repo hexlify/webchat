@@ -5,6 +5,7 @@ import com.webchat.dto.AuthenticationResponseDTO;
 import com.webchat.dto.RegisterRequestDTO;
 import com.webchat.dto.UserDTO;
 import com.webchat.model.User;
+import com.webchat.rest.errors.ConflictException;
 import com.webchat.security.jwt.JwtTokenProvider;
 import com.webchat.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -44,7 +45,6 @@ public class AuthenticationController {
     @PostMapping(value = "/login")
     public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO requestDTO) {
         try {
-
             String username = requestDTO.getUsername();
             authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, requestDTO.getPassword()));
@@ -67,13 +67,14 @@ public class AuthenticationController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
-
-        // TODO проверить что такой пользователь уже существует
+        User foundUser = userService.findByUsername(registerRequestDTO.getUsername());
+        if (foundUser != null) {
+            throw new ConflictException("User already exists");
+        }
         User user = modelMapper.map(registerRequestDTO, User.class);
         try {
             userService.register(user);
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             throw new IllegalArgumentException();
         }
 

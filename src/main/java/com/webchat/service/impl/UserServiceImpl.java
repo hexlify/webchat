@@ -8,11 +8,10 @@ import com.webchat.repository.UserRepository;
 import com.webchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,25 +21,22 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-    }
-
-    // TODO это все таки надо куда-то утащить
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User register(User user) {
         Role roleUser = roleRepository.findByName("ROLE_USER");
 
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
-        user.setRoles(Arrays.asList(roleUser));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singletonList(roleUser));
         user.setStatus(UserStatus.ACTIVE);
 
         User registeredUser = userRepository.save(user);
