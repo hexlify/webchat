@@ -1,6 +1,5 @@
 package com.webchat.config;
 
-import com.webchat.rest.CORSResponseFilter;
 import com.webchat.security.jwt.JwtConfigurer;
 import com.webchat.security.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;

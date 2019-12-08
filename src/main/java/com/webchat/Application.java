@@ -1,10 +1,6 @@
 package com.webchat;
 
-import com.webchat.dto.UserDTO;
-import com.webchat.model.Role;
-import com.webchat.model.User;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;

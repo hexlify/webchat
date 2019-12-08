@@ -38,7 +38,7 @@ public class WebSocketAuthenticationConfig implements WebSocketMessageBrokerConf
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/app");  // обработка сообщений от клиента
+        registry.setApplicationDestinationPrefixes("/chat");  // обработка сообщений от клиента
         registry.enableSimpleBroker("/topic");  // рассылка новостей клиентам
     }
 

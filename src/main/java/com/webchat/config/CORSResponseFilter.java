@@ -1,4 +1,4 @@
-package com.webchat.rest;
+package com.webchat.config;
 
 import org.springframework.beans.factory.annotation.Value;
 
