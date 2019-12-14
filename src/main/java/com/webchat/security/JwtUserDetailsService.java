@@ -1,7 +1,6 @@
 package com.webchat.security;
 
 import com.webchat.model.User;
-import com.webchat.security.jwt.JwtUser;
 import com.webchat.security.jwt.JwtUserFactory;
 import com.webchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 
 @Service
 @Primary
@@ -28,10 +26,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         User user = userService.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User {} not found", username));
+            throw new UsernameNotFoundException(String.format("User %s not found", username));
         }
 
-        JwtUser jwtUser = JwtUserFactory.create(user);
-        return jwtUser;
+        return JwtUserFactory.create(user);
     }
 }
