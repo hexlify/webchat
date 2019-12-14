@@ -14,14 +14,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 public class ChatMessage extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(name = "sender_id")
     private long senderId;
-
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChatRoom.class)
-    @JoinColumn(name = "chat_room_id")
     private long chatRoomId;
-
     private String content;
 
     @Enumerated(EnumType.STRING)

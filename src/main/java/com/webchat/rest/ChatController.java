@@ -32,7 +32,7 @@ public class ChatController {
 
     // без префикса
     @MessageMapping("/sendMessage/{chatRoomId}")
-    public void sendMessage(@DestinationVariable UUID chatRoomId, @Payload ChatMessageDTO chatMessageDTO,
+    public void sendMessage(@DestinationVariable long chatRoomId, @Payload ChatMessageDTO chatMessageDTO,
                             @AuthenticationPrincipal UserDetails userDetails) {
 
         JwtUser sender = (JwtUser) userDetails;

@@ -3,6 +3,7 @@ package com.webchat;
 import com.webchat.model.ChatRoom;
 import com.webchat.model.Role;
 import com.webchat.model.User;
+import com.webchat.repository.ChatMessageRepository;
 import com.webchat.repository.ChatRoomRepository;
 import com.webchat.repository.RoleRepository;
 import com.webchat.service.UserService;
@@ -19,16 +20,20 @@ public class DataLoader implements ApplicationRunner {
 
     private final UserService userService;
     private final RoleRepository roleRepository;
-    private final ChatRoomRepository chatRoomRepo;
+    private final ChatRoomRepository chatRoomRepository;
+
+    private final ChatMessageRepository chatMessageRepository;
 
     @Value("${admin.password}")
     private String adminPassword;
 
     @Autowired
-    public DataLoader(UserService userService, RoleRepository roleRepository, ChatRoomRepository chatRoomRepo) {
+    public DataLoader(UserService userService, RoleRepository roleRepository, ChatRoomRepository chatRoomRepository,
+                      ChatMessageRepository chatMessageRepository) {
         this.userService = userService;
         this.roleRepository = roleRepository;
-        this.chatRoomRepo = chatRoomRepo;
+        this.chatRoomRepository = chatRoomRepository;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     private void createRoles() {
@@ -69,7 +74,7 @@ public class DataLoader implements ApplicationRunner {
         ChatRoom chatRoom1 = new ChatRoom("Test1", "Test1 description");
         ChatRoom chatRoom2 = new ChatRoom("Test2", "Test2 description");
 
-        chatRoomRepo.saveAll(Arrays.asList(chatRoom1, chatRoom2));
+        chatRoomRepository.saveAll(Arrays.asList(chatRoom1, chatRoom2));
     }
 
     @Override
