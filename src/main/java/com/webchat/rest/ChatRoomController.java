@@ -24,7 +24,6 @@ public class ChatRoomController {
         this.chatRoomRepository = chatRoomRepository;
     }
 
-
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS})
     @JsonView(Views.IdNameDescription.class)
     public List<ChatRoom> getAll() {

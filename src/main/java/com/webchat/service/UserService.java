@@ -3,7 +3,6 @@ package com.webchat.service;
 import com.webchat.model.User;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface UserService {
 
@@ -13,9 +12,9 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    User findById(UUID id);
+    User findById(long id);
 
-    void delete(UUID id);
+    void delete(long id);
 
     boolean tryBan(User user);
 }
