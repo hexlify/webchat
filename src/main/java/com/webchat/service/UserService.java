@@ -16,4 +16,6 @@ public interface UserService {
     User findById(UUID id);
 
     void delete(UUID id);
+
+    boolean tryBan(User user);
 }

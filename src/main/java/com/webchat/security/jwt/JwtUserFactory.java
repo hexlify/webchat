@@ -2,7 +2,7 @@ package com.webchat.security.jwt;
 
 import com.webchat.model.Role;
 import com.webchat.model.User;
-import com.webchat.model.UserStatus;
+import com.webchat.model.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

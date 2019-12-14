@@ -1,4 +1,4 @@
-package com.webchat.model;
+package com.webchat.model.enums;
 
 public enum UserStatus {
     ACTIVE,

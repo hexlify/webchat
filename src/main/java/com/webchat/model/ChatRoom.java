@@ -1,30 +1,21 @@
 package com.webchat.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
-
 
 @Entity
-@Table
+@Table(name = "chat_rooms")
+@Data
 @ToString(of = {"name", "description"})
-@EqualsAndHashCode(of = {"id"})
-@NoArgsConstructor
-public class ChatRoom {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.IdNameDescription.class)
-    private UUID id;
+@EqualsAndHashCode(callSuper = true)
+public class ChatRoom extends BaseEntity {
 
     @JsonView(Views.IdNameDescription.class)
     private String name;
@@ -32,52 +23,17 @@ public class ChatRoom {
     @JsonView(Views.IdNameDescription.class)
     private String description;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyy HH:mm:ss")
-    @JsonView(Views.FullChatRoom.class)
-    private LocalDateTime creationTimestamp;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="chat_room_id")
-    @JsonView(Views.FullChatRoom.class)
-    private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoomId")
+    private List<ChatMessage> chatMessages;
 
     public ChatRoom(String name, String description) {
-        id = UUID.randomUUID();
         this.name = name;
         this.description = description;
     }
 
     public List<ChatMessage> getChatMessages() {
-        return chatMessages;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreationTimestamp() {
-        return creationTimestamp;
+        return Collections.unmodifiableList(chatMessages);
     }
 }
