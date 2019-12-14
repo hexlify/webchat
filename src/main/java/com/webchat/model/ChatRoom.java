@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "chat_rooms")
 @Data
+@NoArgsConstructor
 @ToString(of = {"name", "description"})
 @EqualsAndHashCode(callSuper = true)
 public class ChatRoom extends BaseEntity {
