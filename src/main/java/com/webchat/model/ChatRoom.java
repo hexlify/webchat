@@ -1,12 +1,12 @@
 package com.webchat.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,16 +18,14 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class ChatRoom extends BaseEntity {
 
-    @JsonView(Views.IdNameDescription.class)
     private String name;
 
-    @JsonView(Views.IdNameDescription.class)
     private String description;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoomId")
-    private List<ChatMessage> chatMessages;
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     public ChatRoom(String name, String description) {
         this.name = name;

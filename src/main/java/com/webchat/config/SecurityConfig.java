@@ -4,6 +4,7 @@ import com.webchat.security.jwt.JwtConfigurer;
 import com.webchat.security.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,7 +21,6 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String ADMIN_ENDPOINT = "/admin/**";
     private static final String AUTH_ENDPOINTS = "/auth/**";
     private static final String WEBSOCKET_ENDPOINTS = "/ws/**";
 
@@ -47,8 +47,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+
                 .antMatchers(AUTH_ENDPOINTS, WEBSOCKET_ENDPOINTS, "/").permitAll()
-                .antMatchers(ADMIN_ENDPOINT, "/room/create").hasRole("ADMIN")
+
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/room/create").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/room/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/room/**").hasRole("ADMIN")
+
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
@@ -58,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("HEAD","GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -36,9 +35,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(User user) {
         Role roleUser = roleRepository.findByName("ROLE_USER");
+        return registerWithRoles(user, Collections.singletonList(roleUser));
+    }
 
+    @Override
+    public User registerAdmin(User user) {
+        Role roleAdmin = roleRepository.findByName("ROLE_ADMIN");
+        return registerWithRoles(user, Collections.singletonList(roleAdmin));
+    }
+
+    private User registerWithRoles(User user, List<Role> roles) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(roleUser));
+        user.setRoles(roles);
         user.setStatus(UserStatus.ACTIVE);
 
         User registeredUser = userRepository.save(user);
@@ -58,12 +66,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(UUID id) {
+    public User findById(long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             user.setStatus(UserStatus.DELETED);

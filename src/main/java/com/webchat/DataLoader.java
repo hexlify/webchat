@@ -7,6 +7,7 @@ import com.webchat.repository.ChatRoomRepository;
 import com.webchat.repository.RoleRepository;
 import com.webchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -20,9 +21,11 @@ public class DataLoader implements ApplicationRunner {
     private final RoleRepository roleRepository;
     private final ChatRoomRepository chatRoomRepo;
 
+    @Value("${admin.password}")
+    private String adminPassword;
+
     @Autowired
-    public DataLoader(UserService userService, RoleRepository roleRepository,
-                      ChatRoomRepository chatRoomRepo) {
+    public DataLoader(UserService userService, RoleRepository roleRepository, ChatRoomRepository chatRoomRepo) {
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.chatRoomRepo = chatRoomRepo;
@@ -52,6 +55,16 @@ public class DataLoader implements ApplicationRunner {
         userService.register(user2);
     }
 
+    private void createAdmin() {
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setEmail("admin@email.net");
+        admin.setFirstName("Yegor");
+        admin.setPassword(adminPassword);
+
+        userService.registerAdmin(admin);
+    }
+
     private void createChatRooms() {
         ChatRoom chatRoom1 = new ChatRoom("Test1", "Test1 description");
         ChatRoom chatRoom2 = new ChatRoom("Test2", "Test2 description");
@@ -64,5 +77,6 @@ public class DataLoader implements ApplicationRunner {
         createRoles();
         createChatRooms();
         createTestUsers();
+        createAdmin();
     }
 }
