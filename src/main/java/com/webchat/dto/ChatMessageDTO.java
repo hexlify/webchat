@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class ChatMessageDTO {
 
-    private long senderId;
+    private String sender;
     private long chatRoomId;
     private String content;
     private ChatMessageType type;
