@@ -23,3 +23,5 @@ public class ChatMessage extends BaseEntity {
     @Column(length = 8)
     private ChatMessageType type;
 }
+
+// TODO: наверное имеет смысл sender убрать

@@ -4,7 +4,7 @@ package com.webchat.rest;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.webchat.dto.ChatRoomDTO;
 import com.webchat.dto.ChatRoomRequestDTO;
-import com.webchat.dto.Views;
+import com.webchat.dto.ChatRoomViews;
 import com.webchat.model.ChatRoom;
 import com.webchat.repository.ChatRoomRepository;
 import com.webchat.rest.errors.NotFoundException;
@@ -30,7 +30,7 @@ public class ChatRoomController {
     }
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS})
-    @JsonView(Views.IdNameDescription.class)
+    @JsonView(ChatRoomViews.IdNameDescription.class)
     public List<ChatRoomDTO> getAll() {
         return chatRoomRepository.findAll().stream()
                 .map(x -> modelMapper.map(x, ChatRoomDTO.class))
@@ -43,16 +43,16 @@ public class ChatRoomController {
     }
 
     @PostMapping("create")
-    @JsonView(Views.IdNameDescription.class)
+    @JsonView(ChatRoomViews.IdNameDescription.class)
     public ChatRoomDTO create(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
         ChatRoom newChatRoom = modelMapper.map(chatRoomRequestDTO, ChatRoom.class);
         ChatRoom createdChatRoom = chatRoomRepository.save(newChatRoom);
-        
+
         return modelMapper.map(createdChatRoom, ChatRoomDTO.class);
     }
 
     @PutMapping("{chatRoomId}")
-    @JsonView(Views.IdNameDescription.class)
+    @JsonView(ChatRoomViews.IdNameDescription.class)
     public ChatRoomDTO update(@PathVariable("chatRoomId") ChatRoom chatRoom,
                               @RequestBody ChatRoomRequestDTO chatRoomRequest) {
         if (chatRoom == null) {

@@ -11,7 +11,6 @@ import com.webchat.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,22 +42,21 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO requestDTO) {
+    public AuthenticationResponseDTO login(@RequestBody AuthenticationRequestDTO requestDTO) {
         try {
             String username = requestDTO.getUsername();
             authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, requestDTO.getPassword()));
             User user = userService.findByUsername(username);
             if (user == null) {
-                throw new UsernameNotFoundException(String.format("User {} not found", username));
+                throw new UsernameNotFoundException(String.format("User %s not found", username));
             }
 
             String token = jwtTokenProvider.createToken(username, user.getRoles());
             AuthenticationResponseDTO response = new AuthenticationResponseDTO();
-            response.setUsername(username);
             response.setToken(token);
 
-            return ResponseEntity.ok(response);
+            return response;
 
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid user or password");
@@ -66,7 +64,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public UserDTO register(@RequestBody RegisterRequestDTO registerRequestDTO) {
         User foundUser = userService.findByUsername(registerRequestDTO.getUsername());
         if (foundUser != null) {
             throw new ConflictException("User already exists");
@@ -78,7 +76,6 @@ public class AuthenticationController {
             throw new IllegalArgumentException();
         }
 
-        UserDTO response = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok(response);
+        return modelMapper.map(user, UserDTO.class);
     }
 }

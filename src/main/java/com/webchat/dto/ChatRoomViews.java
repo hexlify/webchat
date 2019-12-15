@@ -1,6 +1,6 @@
 package com.webchat.dto;
 
-public final class Views {
+public final class ChatRoomViews {
 
     public interface IdNameDescription {
 
