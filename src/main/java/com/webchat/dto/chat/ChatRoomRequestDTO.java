@@ -1,4 +1,4 @@
-package com.webchat.dto;
+package com.webchat.dto.chat;
 
 import lombok.Data;
 

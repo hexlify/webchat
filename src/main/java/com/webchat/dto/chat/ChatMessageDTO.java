@@ -1,4 +1,4 @@
-package com.webchat.dto;
+package com.webchat.dto.chat;
 
 import com.webchat.model.enums.ChatMessageType;
 import lombok.Data;

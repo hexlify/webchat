@@ -1,9 +1,9 @@
 package com.webchat.rest;
 
-import com.webchat.dto.AuthenticationRequestDTO;
-import com.webchat.dto.AuthenticationResponseDTO;
-import com.webchat.dto.RegisterRequestDTO;
-import com.webchat.dto.UserDTO;
+import com.webchat.dto.auth.AuthenticationRequestDTO;
+import com.webchat.dto.auth.AuthenticationResponseDTO;
+import com.webchat.dto.auth.RegisterRequestDTO;
+import com.webchat.dto.user.UserDTO;
 import com.webchat.model.User;
 import com.webchat.rest.errors.ConflictException;
 import com.webchat.security.jwt.JwtTokenProvider;

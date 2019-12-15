@@ -1,4 +1,4 @@
-package com.webchat.dto;
+package com.webchat.dto.user;
 
 import com.webchat.model.enums.UserStatus;
 import lombok.Data;

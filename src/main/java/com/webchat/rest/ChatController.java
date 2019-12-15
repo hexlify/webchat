@@ -1,6 +1,6 @@
 package com.webchat.rest;
 
-import com.webchat.dto.ChatMessageDTO;
+import com.webchat.dto.chat.ChatMessageDTO;
 import com.webchat.model.ChatMessage;
 import com.webchat.repository.ChatMessageRepository;
 import com.webchat.security.jwt.JwtUser;

@@ -2,9 +2,9 @@ package com.webchat.rest;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.webchat.dto.ChatRoomDTO;
-import com.webchat.dto.ChatRoomRequestDTO;
-import com.webchat.dto.ChatRoomViews;
+import com.webchat.dto.chat.ChatRoomDTO;
+import com.webchat.dto.chat.ChatRoomRequestDTO;
+import com.webchat.dto.chat.ChatRoomViews;
 import com.webchat.model.ChatRoom;
 import com.webchat.repository.ChatRoomRepository;
 import com.webchat.rest.errors.NotFoundException;

@@ -1,4 +1,4 @@
-package com.webchat.dto;
+package com.webchat.dto.chat;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;

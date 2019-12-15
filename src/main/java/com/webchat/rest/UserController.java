@@ -1,6 +1,6 @@
 package com.webchat.rest;
 
-import com.webchat.dto.UserDTO;
+import com.webchat.dto.user.UserDTO;
 import com.webchat.model.User;
 import com.webchat.rest.errors.NotFoundException;
 import com.webchat.service.UserService;
