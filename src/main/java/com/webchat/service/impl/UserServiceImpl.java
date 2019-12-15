@@ -98,5 +98,12 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
+    @Override
+    public void activate(User user) {
+        if (user == null) {
+            return;
+        }
+        user.setStatus(UserStatus.ACTIVE);
+        userRepository.save(user);
+    }
 }

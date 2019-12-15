@@ -1,7 +1,7 @@
 package com.webchat.rest;
 
-import com.webchat.dto.user.AdminUserDTO;
 import com.webchat.dto.statistics.UserStatsDTO;
+import com.webchat.dto.user.AdminUserDTO;
 import com.webchat.model.User;
 import com.webchat.rest.errors.BadRequestException;
 import com.webchat.rest.errors.NotFoundException;
@@ -46,8 +46,8 @@ public class AdminController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    @GetMapping(value = "/ban/{username}")
-    public void banUser(@PathVariable("username") User user) {
+    @GetMapping(value = "/ban/{id}")
+    public void banUser(@PathVariable("id") User user) {
         if (user == null) {
             throw new NotFoundException();
         }
@@ -56,6 +56,15 @@ public class AdminController {
         if (!wasBanned) {
             throw new BadRequestException();
         }
+    }
+
+    @GetMapping(value = "/activate/{id}")
+    public void activateUser(@PathVariable("id") User user) {
+        if (user == null) {
+            throw new NotFoundException();
+        }
+
+        userService.activate(user);
     }
 
     @GetMapping(value = "/stats/{username}")

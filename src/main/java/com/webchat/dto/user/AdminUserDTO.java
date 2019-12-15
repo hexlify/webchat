@@ -8,10 +8,10 @@ import java.util.List;
 @Data
 public class AdminUserDTO {
 
+    private long id;
     private String username;
     private String firstName;
     private String email;
-    private String password;
     private UserStatus status;
 
     private List<RoleDTO> roles;

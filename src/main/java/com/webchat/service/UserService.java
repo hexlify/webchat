@@ -19,4 +19,6 @@ public interface UserService {
     void delete(long id);
 
     boolean tryBan(User user);
+
+    void activate(User user);
 }

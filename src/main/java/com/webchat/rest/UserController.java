@@ -6,7 +6,6 @@ import com.webchat.rest.errors.NotFoundException;
 import com.webchat.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,21 +27,18 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDTO> getUserInfo(Principal principal) {
+    public UserDTO getUserInfo(Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-
-        return ResponseEntity.ok(userDTO);
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @GetMapping(value = "/{username}")
-    public ResponseEntity<UserDTO> getUserInfo(@PathVariable String username) {
+    public UserDTO getUserInfo(@PathVariable String username) {
         User user = userService.findByUsername(username);
         if (user == null) {
             throw new NotFoundException();
         }
 
-        UserDTO result = modelMapper.map(user, UserDTO.class);
-        return ResponseEntity.ok(result);
+        return modelMapper.map(user, UserDTO.class);
     }
 }
