@@ -1,103 +1,24 @@
 package com.webchat.security.jwt;
 
 import com.webchat.model.Role;
-import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-public class JwtTokenProvider {
+public interface JwtTokenProvider {
+    String createEmailToken(String username);
 
-    private final UserDetailsService userDetailsService;
-    @Value("${jwt.token.secret}")
-    private String secret;
-    @Value("${jwt.token.expired}")
-    private long validityInMilliSeconds;
+    String createAuthToken(String username, List<Role> roles);
+    
+    String resolveToken(HttpServletRequest request);
 
-    @Autowired
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    String resolveToken(StompHeaderAccessor stompHeaderAccessor);
 
-    @PostConstruct
-    protected void init() {
-        secret = Base64.getEncoder().encodeToString(secret.getBytes());
-    }
+    boolean validateEmailToken(String token);
 
-    public String createToken(String username, List<Role> roles) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", getRoleNames(roles));
+    boolean validateAuthToken(String token);
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliSeconds);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
-    }
-
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    public String getUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    public String resolveToken(StompHeaderAccessor stompHeaderAccessor) {
-        List<String> headers = stompHeaderAccessor.getNativeHeader("Authorization");
-        if (headers == null || headers.size() == 0) {
-            return null;
-        }
-
-        String bearerToken = headers.get(0);
-        return bearerToken.startsWith("Bearer ")
-                ? bearerToken.substring(7)
-                : null;
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-    private List<String> getRoleNames(List<Role> userRoles) {
-        return userRoles.stream()
-                .map(Role::getName)
-                .collect(Collectors.toList());
-    }
+    Authentication getAuthentication(String token);
 }

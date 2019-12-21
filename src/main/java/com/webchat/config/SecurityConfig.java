@@ -1,7 +1,7 @@
 package com.webchat.config;
 
 import com.webchat.security.jwt.JwtConfigurer;
-import com.webchat.security.jwt.JwtTokenProvider;
+import com.webchat.security.jwt.JwtTokenProviderImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,9 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String AUTH_ENDPOINTS = "/auth/**";
     private static final String WEBSOCKET_ENDPOINTS = "/ws/**";
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProviderImpl jwtTokenProvider;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+    public SecurityConfig(JwtTokenProviderImpl jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers(AUTH_ENDPOINTS, WEBSOCKET_ENDPOINTS, "/").permitAll()
+                .antMatchers(AUTH_ENDPOINTS, WEBSOCKET_ENDPOINTS, "/email/**").permitAll()
 
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/room/create").hasRole("ADMIN")

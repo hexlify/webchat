@@ -9,6 +9,7 @@ import com.webchat.model.enums.UserStatus;
 import com.webchat.rest.errors.exceptions.ConflictException;
 import com.webchat.rest.errors.exceptions.UserNotFoundException;
 import com.webchat.security.jwt.JwtTokenProvider;
+import com.webchat.service.EmailService;
 import com.webchat.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,17 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
+    private final EmailService emailService;
     private final ModelMapper modelMapper;
 
     @Autowired
     public AuthenticationController(
             AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
-            UserService userService, ModelMapper modelMapper) {
+            UserService userService, EmailService emailService, ModelMapper modelMapper) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
+        this.emailService = emailService;
         this.modelMapper = modelMapper;
     }
 
@@ -59,7 +62,7 @@ public class AuthenticationController {
 
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(username, requestDTO.getPassword()));
-        String token = jwtTokenProvider.createToken(username, user.getRoles());
+        String token = jwtTokenProvider.createAuthToken(username, user.getRoles());
         AuthenticationResponseDTO response = new AuthenticationResponseDTO();
         response.setToken(token);
 
@@ -80,7 +83,11 @@ public class AuthenticationController {
         }
 
         User user = modelMapper.map(registerRequestDTO, User.class);
+
         userService.registerUser(user);
+        String token = jwtTokenProvider.createEmailToken(registerRequestDTO.getUsername());
+        emailService.sendVerificationMail(user, token);
+
         return modelMapper.map(user, UserDTO.class);
     }
 }
