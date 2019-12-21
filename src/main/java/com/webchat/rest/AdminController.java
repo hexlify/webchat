@@ -1,13 +1,10 @@
 package com.webchat.rest;
 
-import com.webchat.dto.statistics.UserStatsDTO;
 import com.webchat.dto.user.AdminUserDTO;
 import com.webchat.model.User;
 import com.webchat.rest.errors.exceptions.BadRequestException;
 import com.webchat.rest.errors.exceptions.UserNotFoundException;
 import com.webchat.service.UserService;
-import com.webchat.statistics.StatisticsService;
-import com.webchat.statistics.UserStats;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +23,11 @@ public class AdminController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final StatisticsService statisticsService;
 
     @Autowired
-    public AdminController(UserService userService, ModelMapper modelMapper,
-                           StatisticsService statisticsService) {
+    public AdminController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.statisticsService = statisticsService;
     }
 
     @GetMapping(value = "/users")
@@ -65,15 +59,5 @@ public class AdminController {
         }
 
         userService.activate(user);
-    }
-
-    @GetMapping(value = "/stats/{username}")
-    public ResponseEntity<UserStatsDTO> getStats(@PathVariable("username") User user) {
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-
-        UserStats userStats = statisticsService.getUserStatistics(user);
-        return ResponseEntity.ok(modelMapper.map(userStats, UserStatsDTO.class));
     }
 }
