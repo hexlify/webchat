@@ -65,10 +65,17 @@ public class AuthenticationController {
 
     @PostMapping(value = "/register")
     public UserDTO register(@RequestBody RegisterRequestDTO registerRequestDTO) {
-        User foundUser = userService.findByUsername(registerRequestDTO.getUsername());
-        if (foundUser != null) {
-            throw new ConflictException("User already exists");
+        User userByUsername = userService.findByUsername(registerRequestDTO.getUsername());
+        User userByEmail = userService.findByEmail(registerRequestDTO.getEmail());
+
+        if (userByUsername != null) {
+            throw new ConflictException("Username already in use");
         }
+
+        if (userByEmail != null) {
+            throw new ConflictException("Email already in use");
+        }
+
         User user = modelMapper.map(registerRequestDTO, User.class);
         try {
             userService.register(user);

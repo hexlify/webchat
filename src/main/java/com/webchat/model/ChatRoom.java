@@ -2,10 +2,7 @@ package com.webchat.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +21,10 @@ public class ChatRoom extends BaseEntity {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoomId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoomId", cascade = CascadeType.REMOVE)
     private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    // TODO сообщения данной комнаты удаляются множеством запросов, а не одним. Неэффективно
 
     public ChatRoom(String name, String description) {
         this.name = name;
