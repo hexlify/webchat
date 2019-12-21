@@ -5,14 +5,16 @@ import com.webchat.dto.auth.AuthenticationResponseDTO;
 import com.webchat.dto.auth.RegisterRequestDTO;
 import com.webchat.dto.user.UserDTO;
 import com.webchat.model.User;
+import com.webchat.model.enums.UserStatus;
 import com.webchat.rest.errors.exceptions.ConflictException;
 import com.webchat.rest.errors.exceptions.UserNotFoundException;
 import com.webchat.security.jwt.JwtTokenProvider;
 import com.webchat.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,13 +44,21 @@ public class AuthenticationController {
     @PostMapping(value = "/login")
     public AuthenticationResponseDTO login(@RequestBody AuthenticationRequestDTO requestDTO) {
         String username = requestDTO.getUsername();
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, requestDTO.getPassword()));
         User user = userService.findByUsername(username);
         if (user == null) {
             throw new UserNotFoundException();
         }
 
+        if (user.getStatus() == UserStatus.WAITING_ACTIVATION) {
+            throw new DisabledException("Activate account via email");
+        }
+
+        if (user.getStatus() == UserStatus.BANNED) {
+            throw new LockedException("Account has been banned");
+        }
+
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, requestDTO.getPassword()));
         String token = jwtTokenProvider.createToken(username, user.getRoles());
         AuthenticationResponseDTO response = new AuthenticationResponseDTO();
         response.setToken(token);
@@ -70,12 +80,7 @@ public class AuthenticationController {
         }
 
         User user = modelMapper.map(registerRequestDTO, User.class);
-        try {
-            userService.registerUser(user);
-        } catch (DataAccessException e) {
-            throw new IllegalArgumentException();
-        }
-
+        userService.registerUser(user);
         return modelMapper.map(user, UserDTO.class);
     }
 }

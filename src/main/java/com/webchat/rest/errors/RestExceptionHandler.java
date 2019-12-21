@@ -28,6 +28,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<Object>(apiError, apiError.getHttpStatus());
+        return new ResponseEntity<>(apiError, apiError.getHttpStatus());
     }
 }
