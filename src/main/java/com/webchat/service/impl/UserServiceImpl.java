@@ -33,21 +33,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(User user) {
+    public User registerUser(User user) {
         Role roleUser = roleRepository.findByName("ROLE_USER");
-        return registerWithRoles(user, Collections.singletonList(roleUser));
+        return registerWithRoles(user, Collections.singletonList(roleUser), UserStatus.WAITING_ACTIVATION);
     }
 
     @Override
     public User registerAdmin(User user) {
         Role roleAdmin = roleRepository.findByName("ROLE_ADMIN");
-        return registerWithRoles(user, Collections.singletonList(roleAdmin));
+        return registerWithRoles(user, Collections.singletonList(roleAdmin), UserStatus.ACTIVE);
     }
 
-    private User registerWithRoles(User user, List<Role> roles) {
+    private User registerWithRoles(User user, List<Role> roles, UserStatus userStatus) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roles);
-        user.setStatus(UserStatus.ACTIVE);
+        user.setStatus(userStatus);
 
         User registeredUser = userRepository.save(user);
         log.info("{} was registered", registeredUser);

@@ -21,7 +21,7 @@ public class ChatRoom extends BaseEntity {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoomId", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoomId", orphanRemoval = true)
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     // TODO сообщения данной комнаты удаляются множеством запросов, а не одним. Неэффективно

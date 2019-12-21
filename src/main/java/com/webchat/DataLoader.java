@@ -56,8 +56,8 @@ public class DataLoader implements ApplicationRunner {
         user2.setFirstName("Vovan");
         user2.setPassword("123");
 
-        userService.register(user);
-        userService.register(user2);
+        userService.registerUser(user);
+        userService.registerUser(user2);
     }
 
     private void createAdmin() {

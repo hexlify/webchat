@@ -2,7 +2,7 @@ package com.webchat.rest;
 
 import com.webchat.dto.user.UserDTO;
 import com.webchat.model.User;
-import com.webchat.rest.errors.NotFoundException;
+import com.webchat.rest.errors.exceptions.UserNotFoundException;
 import com.webchat.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserController {
     public UserDTO getUserInfo(@PathVariable String username) {
         User user = userService.findByUsername(username);
         if (user == null) {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
 
         return modelMapper.map(user, UserDTO.class);

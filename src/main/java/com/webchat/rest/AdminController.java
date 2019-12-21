@@ -3,8 +3,8 @@ package com.webchat.rest;
 import com.webchat.dto.statistics.UserStatsDTO;
 import com.webchat.dto.user.AdminUserDTO;
 import com.webchat.model.User;
-import com.webchat.rest.errors.BadRequestException;
-import com.webchat.rest.errors.NotFoundException;
+import com.webchat.rest.errors.exceptions.BadRequestException;
+import com.webchat.rest.errors.exceptions.UserNotFoundException;
 import com.webchat.service.UserService;
 import com.webchat.statistics.StatisticsService;
 import com.webchat.statistics.UserStats;
@@ -49,19 +49,19 @@ public class AdminController {
     @GetMapping(value = "/ban/{id}")
     public void banUser(@PathVariable("id") User user) {
         if (user == null) {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
 
         boolean wasBanned = userService.tryBan(user);
         if (!wasBanned) {
-            throw new BadRequestException();
+            throw new BadRequestException("Can't ban admin");
         }
     }
 
     @GetMapping(value = "/activate/{id}")
     public void activateUser(@PathVariable("id") User user) {
         if (user == null) {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
 
         userService.activate(user);
@@ -70,7 +70,7 @@ public class AdminController {
     @GetMapping(value = "/stats/{username}")
     public ResponseEntity<UserStatsDTO> getStats(@PathVariable("username") User user) {
         if (user == null) {
-            throw new NotFoundException();
+            throw new UserNotFoundException();
         }
 
         UserStats userStats = statisticsService.getUserStatistics(user);

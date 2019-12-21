@@ -16,6 +16,7 @@ public class ChatMessage extends BaseEntity {
 
     private long senderId;
     private long chatRoomId;
+
     private String content;
     private String sender;
 

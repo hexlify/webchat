@@ -7,7 +7,7 @@ import com.webchat.dto.chat.ChatRoomRequestDTO;
 import com.webchat.dto.chat.ChatRoomViews;
 import com.webchat.model.ChatRoom;
 import com.webchat.repository.ChatRoomRepository;
-import com.webchat.rest.errors.NotFoundException;
+import com.webchat.rest.errors.exceptions.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class ChatRoomController {
     public ChatRoomDTO update(@PathVariable("chatRoomId") ChatRoom chatRoom,
                               @RequestBody ChatRoomRequestDTO chatRoomRequest) {
         if (chatRoom == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Chatroom not found");
         }
         BeanUtils.copyProperties(chatRoomRequest, chatRoom);
         return modelMapper.map(chatRoomRepository.save(chatRoom), ChatRoomDTO.class);
@@ -65,7 +65,7 @@ public class ChatRoomController {
     @DeleteMapping("{chatRoomId}")
     public void delete(@PathVariable("chatRoomId") ChatRoom chatRoom) {
         if (chatRoom == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Chatroom not found");
         }
         chatRoomRepository.delete(chatRoom);
     }
