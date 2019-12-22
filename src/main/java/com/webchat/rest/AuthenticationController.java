@@ -89,5 +89,7 @@ public class AuthenticationController {
         emailService.sendVerificationMail(user, token);
 
         return modelMapper.map(user, UserDTO.class);
+
+        // TODO: по хорошему это надо класть в очередь задач
     }
 }
