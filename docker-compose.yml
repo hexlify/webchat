@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  postgres:
+    hostname: postgres
+    container_name: postgres
+    image: postgres:latest
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+
+  backend:
+    hostname: backend
+    container_name: backend
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      - JDBC_DATABASE_USERNAME=${POSTGRES_USER}
+      - JDBC_DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - JDBC_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
+      - FRONTEND_URL
+      - APP_SECRET
+      - ADMIN_PASSWORD
+      - SENDGRID_API_KEY
+      - MAIL_URL
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:

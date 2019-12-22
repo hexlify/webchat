@@ -1,21 +1,12 @@
 # Вебчат
 
-Доска в [Trello](https://trello.com/b/AlN4zek0/web-chat)
 
-## Demo
 
-[Тут](https://webchat-frontend.herokuapp.com/)
+Фронт (демка) лежит [Тут](https://webchat-frontend.herokuapp.com/)
 
 
 ## Запуск веб-сервиса
 
-+ `Java 8+`
-+ `Maven plugin`
-+ `Lombok plugin`
-
 ```
-mvn clean package
-java -jar .\target\webchat-1.0-SNAPSHOT.jar
+$ docker-compose up -d
 ```
-
-Сервер работает на `localhost:8000`
