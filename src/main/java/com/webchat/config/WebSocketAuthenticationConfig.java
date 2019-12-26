@@ -33,7 +33,9 @@ public class WebSocketAuthenticationConfig implements WebSocketMessageBrokerConf
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:3000", "https://webchat-frontend.herokuapp.com")
+                .withSockJS();
     }
 
     @Override
