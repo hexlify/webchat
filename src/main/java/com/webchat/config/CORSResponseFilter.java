@@ -1,6 +1,6 @@
 package com.webchat.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
@@ -9,8 +9,11 @@ import java.io.IOException;
 
 public class CORSResponseFilter implements Filter {
 
-    @Value("${frontend.url}")
-    private String frontendUrl;
+    private final String frontendUrl;
+
+    public CORSResponseFilter(String frontendUrl) {
+        this.frontendUrl = frontendUrl;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

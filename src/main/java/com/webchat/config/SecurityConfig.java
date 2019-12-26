@@ -1,7 +1,9 @@
 package com.webchat.config;
 
+import com.webchat.config.props.AppProperties;
 import com.webchat.security.jwt.JwtConfigurer;
 import com.webchat.security.jwt.JwtTokenProviderImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,9 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String WEBSOCKET_ENDPOINTS = "/ws/**";
 
     private final JwtTokenProviderImpl jwtTokenProvider;
+    private final AppProperties appProperties;
 
-    public SecurityConfig(JwtTokenProviderImpl jwtTokenProvider) {
+    @Autowired
+    public SecurityConfig(JwtTokenProviderImpl jwtTokenProvider, AppProperties appProperties) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.appProperties = appProperties;
     }
 
     @Bean
@@ -39,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(new CORSResponseFilter(), SessionManagementFilter.class)
+                .addFilterBefore(new CORSResponseFilter(appProperties.getFrontendUrl()), SessionManagementFilter.class)
                 .cors()
                 .and()
                 .csrf().disable()  // АККУРАТНЕЕ С ЭТОЙ ХУЕТОЙ!!!
