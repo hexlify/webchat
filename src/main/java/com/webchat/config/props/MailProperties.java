@@ -1,4 +1,4 @@
-package com.webchat.config;
+package com.webchat.config.props;
 
 
 import lombok.Data;

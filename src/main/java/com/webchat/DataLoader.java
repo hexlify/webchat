@@ -1,14 +1,13 @@
 package com.webchat;
 
+import com.webchat.config.props.AppProperties;
 import com.webchat.model.ChatRoom;
 import com.webchat.model.Role;
 import com.webchat.model.User;
-import com.webchat.repository.ChatMessageRepository;
 import com.webchat.repository.ChatRoomRepository;
 import com.webchat.repository.RoleRepository;
 import com.webchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -22,18 +21,15 @@ public class DataLoader implements ApplicationRunner {
     private final RoleRepository roleRepository;
     private final ChatRoomRepository chatRoomRepository;
 
-    private final ChatMessageRepository chatMessageRepository;
-
-    @Value("${admin.password}")
-    private String adminPassword;
+    private final AppProperties appProperties;
 
     @Autowired
     public DataLoader(UserService userService, RoleRepository roleRepository, ChatRoomRepository chatRoomRepository,
-                      ChatMessageRepository chatMessageRepository) {
+                      AppProperties appProperties) {
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.chatRoomRepository = chatRoomRepository;
-        this.chatMessageRepository = chatMessageRepository;
+        this.appProperties = appProperties;
     }
 
     private void createRoles() {
@@ -65,7 +61,7 @@ public class DataLoader implements ApplicationRunner {
         admin.setUsername("admin");
         admin.setEmail("admin@email.net");
         admin.setFirstName("Yegor");
-        admin.setPassword(adminPassword);
+        admin.setPassword(appProperties.getAdminPassword());
 
         userService.registerAdmin(admin);
     }

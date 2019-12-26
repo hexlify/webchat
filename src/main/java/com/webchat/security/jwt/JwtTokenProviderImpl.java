@@ -1,9 +1,12 @@
 package com.webchat.security.jwt;
 
+import com.webchat.config.props.AppProperties;
 import com.webchat.model.Role;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,19 +30,18 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
 
     private final UserDetailsService userDetailsService;
-    @Value("${jwt.token.secret}")
+    private final AppProperties appProperties;
     private String secret;
-    @Value("${jwt.token.expired}")
-    private long validityInMilliSeconds;
 
     @Autowired
-    public JwtTokenProviderImpl(UserDetailsService userDetailsService) {
+    public JwtTokenProviderImpl(UserDetailsService userDetailsService, AppProperties appProperties) {
         this.userDetailsService = userDetailsService;
+        this.appProperties = appProperties;
     }
 
     @PostConstruct
     protected void init() {
-        secret = Base64.getEncoder().encodeToString(secret.getBytes());
+        secret = Base64.getEncoder().encodeToString(appProperties.getSecret().getBytes());
     }
 
     @Override
@@ -63,7 +65,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     private String createToken(Claims claims) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliSeconds);
+        Date validity = new Date(now.getTime() + appProperties.getTokenExpiration());
 
         return Jwts.builder()
                 .setClaims(claims)

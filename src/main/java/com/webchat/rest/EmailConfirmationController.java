@@ -8,10 +8,6 @@ import com.webchat.security.jwt.JwtTokenProvider;
 import com.webchat.security.jwt.JwtUser;
 import com.webchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +21,6 @@ public class EmailConfirmationController {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-
-    @Value("${frontend.url}")
-    private String frontendUrl;
 
     @Autowired
     public EmailConfirmationController(JwtTokenProvider jwtTokenProvider, UserService userService) {

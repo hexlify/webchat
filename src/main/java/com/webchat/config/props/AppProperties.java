@@ -11,4 +11,7 @@ import org.springframework.stereotype.Component;
 public class AppProperties {
 
     private String frontendUrl;
+    private String secret;
+    private String adminPassword;
+    private long tokenExpiration;
 }

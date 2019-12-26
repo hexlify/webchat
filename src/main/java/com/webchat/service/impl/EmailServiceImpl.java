@@ -1,6 +1,6 @@
 package com.webchat.service.impl;
 
-import com.webchat.config.MailProperties;
+import com.webchat.config.props.MailProperties;
 import com.webchat.model.User;
 import com.webchat.service.EmailService;
 import freemarker.template.Configuration;
